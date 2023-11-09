@@ -16,6 +16,19 @@ class SimpleReportScreenState extends State<SimpleReportScreen> {
   final PageController _pageController = PageController(initialPage: 0);
   int _currentPage = 0;
   final int _totalPages = 3;
+  void nextPage() {
+    _pageController.nextPage(
+      duration: Duration(milliseconds: 500),
+      curve: Curves.ease,
+    );
+  }
+
+  void previousPage() {
+    _pageController.previousPage(
+      duration: Duration(milliseconds: 500),
+      curve: Curves.ease,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,14 +47,14 @@ class SimpleReportScreenState extends State<SimpleReportScreen> {
                 });
               },
               children: [
-                TypeOfFire(),
+                TypeOfFire(goToNextPage: () => nextPage()),
                 CommentsScreen(),
                 AddImagesScreen()
               ],
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 23),
+            padding: const EdgeInsets.only(bottom: 32),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(_totalPages, (index) {
@@ -51,7 +64,9 @@ class SimpleReportScreenState extends State<SimpleReportScreen> {
                   margin: const EdgeInsets.symmetric(horizontal: 5.0),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: _currentPage == index ? AppColors.primaryColor : AppColors.secondaryText.withOpacity(0.7),
+                    color: _currentPage == index
+                        ? AppColors.primaryColor
+                        : AppColors.secondaryText.withOpacity(0.7),
                   ),
                 );
               }),

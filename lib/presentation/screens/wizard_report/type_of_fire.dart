@@ -3,7 +3,8 @@ import 'package:bomberos_ya/config/theme/text_styles.dart';
 import 'package:flutter/material.dart';
 
 class TypeOfFire extends StatelessWidget {
-  TypeOfFire({super.key});
+  final Function goToNextPage;
+  TypeOfFire({super.key, required this.goToNextPage});
 
   final List<String> fireTypes = [
     "Fuego 1",
@@ -20,7 +21,8 @@ class TypeOfFire extends StatelessWidget {
       children: [
         const Padding(
           padding: EdgeInsets.symmetric(vertical: 16),
-          child: Text('Selecciona el tipo de incendio', style: TextStyles.boldSecondaryLargeTextStyle),
+          child: Text('Selecciona el tipo de incendio',
+              style: TextStyles.boldSecondaryLargeTextStyle),
         ),
         Expanded(
           child: Padding(
@@ -32,47 +34,50 @@ class TypeOfFire extends StatelessWidget {
               ),
               itemCount: fireTypes.length,
               itemBuilder: (context, index) {
-                return Container(
-                  margin: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.secondaryText.withOpacity(0.2),
-                        spreadRadius: 5,
-                        blurRadius: 7,
-                        offset: const Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      ClipRRect(
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(20),
+                return InkWell(
+                  onTap: ()=>goToNextPage(),
+                  child: Container(
+                    margin: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.secondaryText.withOpacity(0.2),
+                          spreadRadius: 5,
+                          blurRadius: 7,
+                          offset: const Offset(0, 3),
                         ),
-                        child: Image.network(
-                          'https://i.pinimg.com/originals/30/8d/79/308d795c3cac0f8f16610f53df4e1005.jpg',
-                          height: 120,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.circular(20),
+                          ),
+                          child: Image.network(
+                            'https://i.pinimg.com/originals/30/8d/79/308d795c3cac0f8f16610f53df4e1005.jpg',
+                            height: 120,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: Text(
+                        Expanded(
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                              child: Text(
                                 fireTypes[index],
                                 style: TextStyles.regularSecondaryMediumTextStyle,
                                 maxLines: 2,
                               ),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 );
               },
