@@ -1,3 +1,4 @@
+import 'package:bomberos_ya/config/theme/app_colors.dart';
 import 'package:bomberos_ya/config/theme/text_styles.dart';
 import 'package:flutter/material.dart';
 
@@ -38,10 +39,10 @@ class TypeOfFire extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.withOpacity(0.15),
+                        color: AppColors.secondaryText.withOpacity(0.2),
                         spreadRadius: 5,
                         blurRadius: 7,
-                        offset: Offset(0, 3),
+                        offset: const Offset(0, 3),
                       ),
                     ],
                   ),

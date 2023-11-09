@@ -23,4 +23,18 @@ class TextStyles {
     color: AppColors.secondaryText,
     fontSize: 16
   );
+
+  static const TextStyle filledButtonTextStyle = TextStyle(
+    color: Colors.white,
+    fontSize: 20,
+    fontWeight: FontWeight.bold
+  );
+
+  static const TextStyle textButtonTextStyle = TextStyle(
+    color: AppColors.primaryColor,
+    fontSize: 16,
+    fontWeight: FontWeight.bold
+  );
+
+  
 }

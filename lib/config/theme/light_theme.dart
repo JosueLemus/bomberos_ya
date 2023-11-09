@@ -2,20 +2,28 @@ import 'package:flutter/material.dart';
 
 import 'app_colors.dart';
 
-
 class AppTheme {
   static ThemeData lightTheme = ThemeData(
-    primaryColor: AppColors.primaryBackground, // Color de fondo para AppBar
+    primaryColor: AppColors.primaryBackground,
     scaffoldBackgroundColor: AppColors.primaryBackground,
+    elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ButtonStyle(
+            backgroundColor: MaterialStateColor.resolveWith(
+                (states) => AppColors.primaryColor)),),
+                textButtonTheme: TextButtonThemeData(
+                  style: ButtonStyle(
+                    textStyle: MaterialStateProperty.resolveWith((states) => TextStyle(color: Colors.green))
+                  )
+                ),
     appBarTheme: const AppBarTheme(
-      elevation: 0, // Sin elevación en el AppBar
-      backgroundColor: AppColors.primaryBackground, // Color de fondo del AppBar
-      iconTheme: IconThemeData(color: AppColors.primaryText), // Color del icono de retroceso
+      elevation: 0,
+      backgroundColor: AppColors.primaryBackground,
+      iconTheme: IconThemeData(color: AppColors.primaryText),
       titleTextStyle: TextStyle(
-          color: AppColors.primaryText, // Color del texto del AppBar
-          fontSize: 20, // Tamaño de fuente del título del AppBar
-          fontWeight: FontWeight.bold,
-        ),
+        color: AppColors.primaryText,
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+      ),
     ),
   );
 }

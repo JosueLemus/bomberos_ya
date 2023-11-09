@@ -1,3 +1,4 @@
+import 'package:bomberos_ya/config/theme/app_colors.dart';
 import 'package:bomberos_ya/presentation/screens/wizard_report/add_images_screen.dart';
 import 'package:bomberos_ya/presentation/screens/wizard_report/type_of_fire.dart';
 import 'package:flutter/material.dart';
@@ -45,12 +46,12 @@ class SimpleReportScreenState extends State<SimpleReportScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(_totalPages, (index) {
                 return Container(
-                  width: 10.0,
-                  height: 10.0,
+                  width: 15.0,
+                  height: 15.0,
                   margin: const EdgeInsets.symmetric(horizontal: 5.0),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: _currentPage == index ? Colors.blue : Colors.grey,
+                    color: _currentPage == index ? AppColors.primaryColor : AppColors.secondaryText.withOpacity(0.7),
                   ),
                 );
               }),
