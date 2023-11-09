@@ -1,9 +1,75 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:bomberos_ya/config/theme/app_colors.dart';
 import 'package:bomberos_ya/config/theme/text_styles.dart';
+import 'package:bomberos_ya/presentation/widgets/microphone_button.dart';
 import 'package:flutter/material.dart';
+import 'package:record/record.dart';
 
-class CommentsScreen extends StatelessWidget {
+class CommentsScreen extends StatefulWidget {
   const CommentsScreen({super.key});
+
+  @override
+  State<CommentsScreen> createState() => _CommentsScreenState();
+}
+
+class _CommentsScreenState extends State<CommentsScreen> {
+  late Record audioRecord;
+  late AudioPlayer audioPlayer;
+  bool isRecorindg = false;
+  String audioPath = '';
+  @override
+  void initState() {
+    audioPlayer = AudioPlayer();
+    audioRecord = Record();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    audioPlayer.dispose();
+    audioRecord.dispose();
+    super.dispose();
+  }
+
+  Future<void> startRecording() async {
+    if (isRecorindg) {
+      return;
+    }
+    try {
+      if (await audioRecord.hasPermission()) {
+        await audioRecord.start();
+        setState(() {
+          isRecorindg = true;
+        });
+      }
+    } catch (e) {
+      debugPrint("Error Start recording: $e");
+    }
+  }
+
+  Future<void> stopRecording() async {
+    if (!isRecorindg) {
+      return;
+    }
+    try {
+      String? path = await audioRecord.stop();
+      setState(() {
+        isRecorindg = false;
+        audioPath = path ?? '';
+      });
+    } catch (e) {
+      debugPrint("Error Stopping record: $e");
+    }
+  }
+
+  Future<void> playRecording() async {
+    try {
+      Source urlSource = UrlSource(audioPath);
+      await audioPlayer.play(urlSource);
+    } catch (e) {
+      debugPrint('Error playing Recording: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,35 +94,48 @@ class CommentsScreen extends StatelessWidget {
               ),
             ],
           ),
-          Container(
-            width: 350,
-            height: 350,
-            decoration: BoxDecoration(
-                color: AppColors.primaryColor.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(175)),
-            child: Center(
-              child: Container(
-                width: 300,
-                height: 300,
-                decoration: BoxDecoration(
-                    color: AppColors.primaryColor.withOpacity(0.4),
-                    borderRadius: BorderRadius.circular(175)),
-                child: Center(
-                  child: Container(
-                      width: 230,
-                      height: 230,
-                      decoration: BoxDecoration(
-                          color: AppColors.primaryColor,
-                          borderRadius: BorderRadius.circular(175)),
-                      child: const Icon(
-                        Icons.mic,
-                        size: 150,
-                        color: Colors.white,
-                      )),
+          MicrophoneButton(startRecording: startRecording),
+          if (isRecorindg) InkWell(
+            onTap: stopRecording,
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                    width: 5,
+                    color:
+                        AppColors.primaryColor),
+                borderRadius: BorderRadius.circular(30),
+              ),
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Icon(
+                  Icons.stop,
+                  color: AppColors.primaryColor,
                 ),
               ),
             ),
           ),
+
+          if(!isRecorindg && audioPath.isNotEmpty) InkWell(
+            onTap: playRecording,
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                    width: 5,
+                    color:
+                        AppColors.primaryColor),
+                borderRadius: BorderRadius.circular(30),
+              ),
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Icon(
+                  Icons.play_arrow_rounded,
+                  color: AppColors.primaryColor,
+                ),
+              ),
+            ),
+          ),
+
+          
           Padding(
             padding: const EdgeInsets.only(bottom: 32),
             child: Column(
