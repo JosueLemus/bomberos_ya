@@ -5,6 +5,8 @@ import 'package:bomberos_ya/presentation/widgets/microphone_button.dart';
 import 'package:flutter/material.dart';
 import 'package:record/record.dart';
 
+import '../../widgets/custom_record_button.dart';
+
 class CommentsScreen extends StatefulWidget {
   const CommentsScreen({super.key});
 
@@ -95,47 +97,11 @@ class _CommentsScreenState extends State<CommentsScreen> {
             ],
           ),
           MicrophoneButton(startRecording: startRecording),
-          if (isRecorindg) InkWell(
-            onTap: stopRecording,
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                    width: 5,
-                    color:
-                        AppColors.primaryColor),
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Icon(
-                  Icons.stop,
-                  color: AppColors.primaryColor,
-                ),
-              ),
-            ),
-          ),
-
-          if(!isRecorindg && audioPath.isNotEmpty) InkWell(
-            onTap: playRecording,
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                    width: 5,
-                    color:
-                        AppColors.primaryColor),
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Icon(
-                  Icons.play_arrow_rounded,
-                  color: AppColors.primaryColor,
-                ),
-              ),
-            ),
-          ),
-
-          
+          if (isRecorindg)
+            CustomRecordButton(icon: Icons.stop, onTap: stopRecording),
+          if (!isRecorindg && audioPath.isNotEmpty)
+            CustomRecordButton(
+                icon: Icons.play_arrow_rounded, onTap: playRecording),
           Padding(
             padding: const EdgeInsets.only(bottom: 32),
             child: Column(
