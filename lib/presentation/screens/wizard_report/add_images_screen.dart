@@ -21,7 +21,7 @@ class _AddImagesScreenState extends ConsumerState<AddImagesScreen> {
 
   Future<void> _openCamera() async {
     final picker = ImagePicker();
-    final image = await picker.pickImage(source: ImageSource.camera);
+    final image = await picker.pickImage(source: ImageSource.camera, imageQuality: 5);
     if (image != null) {
       setState(() {
         if (selectedImages.length < imageLimit) {

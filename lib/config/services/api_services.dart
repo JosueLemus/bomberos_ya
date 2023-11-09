@@ -4,7 +4,7 @@ import 'package:bomberos_ya/models/fire_types.dart';
 import 'package:http/http.dart' as http;
 
 class ApiServices {
-  final baseUrl = "http://192.168.0.28:3001";
+  final baseUrl = "http://192.168.137.105:3001";
 
   Future<List<FireTypes>> getFireTypes() async {
     final url = Uri.parse('$baseUrl/tipo-solicitudes');

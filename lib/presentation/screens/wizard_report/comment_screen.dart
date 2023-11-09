@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:bomberos_ya/config/helpers/base64_converter.dart';
 import 'package:bomberos_ya/config/theme/text_styles.dart';
 import 'package:bomberos_ya/presentation/providers/simple_report_provider.dart';
 import 'package:bomberos_ya/presentation/widgets/microphone_button.dart';
@@ -81,7 +82,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
   Future<void> sendAudio() async {
     if (audioPath.isNotEmpty) {
       try {
-        final base64Audio = await AudioConversionUtil.convertAudioToBase64(File(audioPath));
+        final base64Audio = await Base64Converter.convertAudioToBase64(File(audioPath));
         ref.read(simpleReportProvider).audioBase64 = base64Audio;
         // Envía base64Audio al backend o realiza otras operaciones según tus necesidades
         debugPrint('Audio en formato base64: $base64Audio');
@@ -145,39 +146,5 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
         ],
       ),
     );
-  }
-}
-
-
-// import 'dart:convert';
-// import 'dart:io';
-
-class AudioConversionUtil {
-  static Future<String> convertAudioToBase64(File audioFile) async {
-    if (audioFile != null && audioFile.existsSync()) {
-      List<int> audioBytes = await audioFile.readAsBytes();
-      String base64Audio = base64Encode(audioBytes);
-      return base64Audio;
-    } else {
-      throw Exception('El archivo de audio no existe o es nulo.');
-    }
-  }
-}
-
-class ImageConversionUtil {
-  static Future<List<String>> convertImagesToBase64(List<XFile> imageFiles) async {
-    final List<String> base64Images = [];
-
-    for (final imageFile in imageFiles) {
-      if (imageFile != null && File(imageFile.path).existsSync()) {
-        final List<int> imageBytes = await File(imageFile.path).readAsBytes();
-        final String base64Image = base64Encode(imageBytes);
-        base64Images.add(base64Image);
-      } else {
-        throw Exception('Uno o más archivos de imagen no existen o son nulos.');
-      }
-    }
-
-    return base64Images;
   }
 }
