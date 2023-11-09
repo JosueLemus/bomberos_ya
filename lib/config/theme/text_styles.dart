@@ -24,6 +24,11 @@ class TextStyles {
     fontSize: 16
   );
 
+  static const TextStyle regularSecondarySmallTextStyle = TextStyle(
+    color: AppColors.secondaryText,
+    fontSize: 14
+  );
+
   static const TextStyle filledButtonTextStyle = TextStyle(
     color: Colors.white,
     fontSize: 20,

@@ -1,20 +1,21 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:bomberos_ya/config/theme/app_colors.dart';
 import 'package:bomberos_ya/config/theme/text_styles.dart';
 import 'package:bomberos_ya/presentation/widgets/microphone_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:record/record.dart';
-
 import '../../widgets/custom_record_button.dart';
 
-class CommentsScreen extends StatefulWidget {
+class CommentsScreen extends ConsumerStatefulWidget {
   const CommentsScreen({super.key});
 
   @override
-  State<CommentsScreen> createState() => _CommentsScreenState();
+  ConsumerState<CommentsScreen> createState() => _CommentsScreenState();
 }
 
-class _CommentsScreenState extends State<CommentsScreen> {
+class _CommentsScreenState extends ConsumerState<CommentsScreen> {
   late Record audioRecord;
   late AudioPlayer audioPlayer;
   bool isRecorindg = false;
@@ -73,6 +74,23 @@ class _CommentsScreenState extends State<CommentsScreen> {
     }
   }
 
+  // Añade este método para enviar el audio
+  Future<void> sendAudio() async {
+    if (audioPath.isNotEmpty) {
+      try {
+        final base64Audio = await AudioConversionUtil.convertAudioToBase64(File(audioPath));
+        
+        // Envía base64Audio al backend o realiza otras operaciones según tus necesidades
+        debugPrint('Audio en formato base64: $base64Audio');
+      } catch (e) {
+        debugPrint('Error al enviar el audio: $e');
+      }
+    } else {
+      // Maneja el caso en el que no hay audio grabado
+      debugPrint('No hay audio grabado para enviar');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -83,7 +101,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
           Column(
             children: const [
               Text(
-                "Agrega un comentario de la situacion.",
+                "Agrega un comentario de la situación.",
                 style: TextStyles.boldSecondaryLargeTextStyle,
               ),
               SizedBox(
@@ -106,23 +124,38 @@ class _CommentsScreenState extends State<CommentsScreen> {
             padding: const EdgeInsets.only(bottom: 32),
             child: Column(
               children: [
-                SizedBox(
-                    width: double.infinity,
-                    height: 50,
-                    child: ElevatedButton(
-                        onPressed: () {},
-                        child: const Text('Aceptar',
-                            style: TextStyles.filledButtonTextStyle))),
+                // Añade un botón para enviar el audio
+                ElevatedButton(
+                  onPressed: sendAudio,
+                  child: const Text('Enviar audio',
+                      style: TextStyles.filledButtonTextStyle),
+                ),
                 TextButton(
                   onPressed: () {},
                   child: const Text("Enviar texto",
                       style: TextStyles.textButtonTextStyle),
-                )
+                ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
+  }
+}
+
+
+// import 'dart:convert';
+// import 'dart:io';
+
+class AudioConversionUtil {
+  static Future<String> convertAudioToBase64(File audioFile) async {
+    if (audioFile != null && audioFile.existsSync()) {
+      List<int> audioBytes = await audioFile.readAsBytes();
+      String base64Audio = base64Encode(audioBytes);
+      return base64Audio;
+    } else {
+      throw Exception('El archivo de audio no existe o es nulo.');
+    }
   }
 }

@@ -18,14 +18,14 @@ class SimpleReportScreenState extends State<SimpleReportScreen> {
   final int _totalPages = 3;
   void nextPage() {
     _pageController.nextPage(
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
       curve: Curves.ease,
     );
   }
 
   void previousPage() {
     _pageController.previousPage(
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
       curve: Curves.ease,
     );
   }
@@ -48,8 +48,8 @@ class SimpleReportScreenState extends State<SimpleReportScreen> {
               },
               children: [
                 TypeOfFire(goToNextPage: () => nextPage()),
-                CommentsScreen(),
-                AddImagesScreen()
+                const CommentsScreen(),
+                const AddImagesScreen()
               ],
             ),
           ),

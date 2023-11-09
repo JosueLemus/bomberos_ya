@@ -38,6 +38,8 @@ dependencies:
   record: ^4.4.4
   audioplayers: ^4.1.0
   image_picker: ^1.0.0
+  http: ^0.13.6
+  flutter_riverpod: ^2.3.6
 
 dev_dependencies:
   flutter_test:

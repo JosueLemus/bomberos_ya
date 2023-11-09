@@ -1,22 +1,16 @@
 import 'package:bomberos_ya/config/theme/app_colors.dart';
 import 'package:bomberos_ya/config/theme/text_styles.dart';
+import 'package:bomberos_ya/presentation/providers/simple_report_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class TypeOfFire extends StatelessWidget {
+class TypeOfFire extends ConsumerWidget {
   final Function goToNextPage;
-  TypeOfFire({super.key, required this.goToNextPage});
-
-  final List<String> fireTypes = [
-    "Fuego 1",
-    "Fuego 2",
-    "Fuego 3",
-    "Fuego 4",
-    "Fuego 5 Fuego 5 Fuego 5 Fuego 5",
-    "Fuego 6",
-  ];
+  const TypeOfFire({super.key, required this.goToNextPage});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+    final provider = ref.watch(simpleReportProvider);
     return Column(
       children: [
         const Padding(
@@ -32,10 +26,13 @@ class TypeOfFire extends StatelessWidget {
                 crossAxisCount: 2,
                 childAspectRatio: 1.0,
               ),
-              itemCount: fireTypes.length,
+              itemCount: provider.fireTypes.length,
               itemBuilder: (context, index) {
                 return InkWell(
-                  onTap: ()=>goToNextPage(),
+                  onTap: (){
+                    provider.selectedType = provider.fireTypes[index];
+                    goToNextPage();
+                  },
                   child: Container(
                     margin: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
@@ -57,11 +54,14 @@ class TypeOfFire extends StatelessWidget {
                             topLeft: Radius.circular(20),
                             topRight: Radius.circular(20),
                           ),
-                          child: Image.network(
-                            'https://i.pinimg.com/originals/30/8d/79/308d795c3cac0f8f16610f53df4e1005.jpg',
-                            height: 120,
-                            width: double.infinity,
-                            fit: BoxFit.cover,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Image.network(
+                              provider.fireTypes[index].imageUrl,
+                              height: 100,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                         Expanded(
@@ -69,9 +69,10 @@ class TypeOfFire extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 16),
                               child: Text(
-                                fireTypes[index],
-                                style: TextStyles.regularSecondaryMediumTextStyle,
+                                provider.fireTypes[index].nombre,
+                                style: TextStyles.regularSecondarySmallTextStyle,
                                 maxLines: 2,
+                                textAlign: TextAlign.center,
                               ),
                             ),
                           ),
