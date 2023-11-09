@@ -18,4 +18,9 @@ class TextStyles {
     fontSize: 18,
     fontWeight: FontWeight.bold,
   );
+
+  static const TextStyle regularSecondaryMediumTextStyle = TextStyle(
+    color: AppColors.secondaryText,
+    fontSize: 16
+  );
 }

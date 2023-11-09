@@ -32,7 +32,7 @@ class SimpleReportScreenState extends State<SimpleReportScreen> {
                   _currentPage = page;
                 });
               },
-              children: const [
+              children: [
                 TypeOfFire(),
                 CommentsScreen(),
                 AddImagesScreen()
