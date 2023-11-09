@@ -17,6 +17,7 @@ class ApiServices {
 
   Future<void> postReport(String audio, List<String> images) async {
     final url = Uri.parse('$baseUrl/denuncias');
+    final imagenes2 = jsonEncode(images);
     final response = await http.post(
       url,
       body: {'usuario': "El ya tu sabe",
@@ -25,7 +26,7 @@ class ApiServices {
       // 'tipoDenuncia':"",
       // 'lon':"",
       // 'lat': "",
-      'imagenesList': images,
+      'imagenes': imagenes2,
       'audio': audio,
       },
     );

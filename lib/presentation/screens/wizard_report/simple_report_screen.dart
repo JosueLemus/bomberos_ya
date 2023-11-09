@@ -47,8 +47,8 @@ class SimpleReportScreenState extends State<SimpleReportScreen> {
                 });
               },
               children: [
-                TypeOfFire(goToNextPage: () => nextPage()),
-                const CommentsScreen(),
+                TypeOfFire(goToNextPage: nextPage),
+                CommentsScreen(goToNextPage: nextPage),
                 const AddImagesScreen()
               ],
             ),

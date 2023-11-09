@@ -11,7 +11,8 @@ import 'package:record/record.dart';
 import '../../widgets/custom_record_button.dart';
 
 class CommentsScreen extends ConsumerStatefulWidget {
-  const CommentsScreen({super.key});
+  final Function goToNextPage;
+  const CommentsScreen({super.key, required this.goToNextPage});
 
   @override
   ConsumerState<CommentsScreen> createState() => _CommentsScreenState();
@@ -84,6 +85,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
         ref.read(simpleReportProvider).audioBase64 = base64Audio;
         // Envía base64Audio al backend o realiza otras operaciones según tus necesidades
         debugPrint('Audio en formato base64: $base64Audio');
+        widget.goToNextPage();
       } catch (e) {
         debugPrint('Error al enviar el audio: $e');
       }

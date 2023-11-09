@@ -25,6 +25,7 @@ class _SimpleReportProvider extends ChangeNotifier {
 
   void postData() async {
     final images = await ImageConversionUtil.convertImagesToBase64(selectedImages);
+    print(images);
     services.postReport(audioBase64, images);
     
   }
