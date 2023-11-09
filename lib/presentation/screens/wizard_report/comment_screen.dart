@@ -2,9 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:bomberos_ya/config/theme/text_styles.dart';
+import 'package:bomberos_ya/presentation/providers/simple_report_provider.dart';
 import 'package:bomberos_ya/presentation/widgets/microphone_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:record/record.dart';
 import '../../widgets/custom_record_button.dart';
 
@@ -79,7 +81,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
     if (audioPath.isNotEmpty) {
       try {
         final base64Audio = await AudioConversionUtil.convertAudioToBase64(File(audioPath));
-        
+        ref.read(simpleReportProvider).audioBase64 = base64Audio;
         // Envía base64Audio al backend o realiza otras operaciones según tus necesidades
         debugPrint('Audio en formato base64: $base64Audio');
       } catch (e) {
@@ -157,5 +159,23 @@ class AudioConversionUtil {
     } else {
       throw Exception('El archivo de audio no existe o es nulo.');
     }
+  }
+}
+
+class ImageConversionUtil {
+  static Future<List<String>> convertImagesToBase64(List<XFile> imageFiles) async {
+    final List<String> base64Images = [];
+
+    for (final imageFile in imageFiles) {
+      if (imageFile != null && File(imageFile.path).existsSync()) {
+        final List<int> imageBytes = await File(imageFile.path).readAsBytes();
+        final String base64Image = base64Encode(imageBytes);
+        base64Images.add(base64Image);
+      } else {
+        throw Exception('Uno o más archivos de imagen no existen o son nulos.');
+      }
+    }
+
+    return base64Images;
   }
 }

@@ -15,13 +15,20 @@ class ApiServices {
     return FireTypes.fromJsonList(json);
   }
 
-  Future<List<String>> postReport() async {
-    final url = Uri.parse('$baseUrl/denuncias?usuario=');
-    final response = await http.get(
+  Future<void> postReport(String audio, List<String> images) async {
+    final url = Uri.parse('$baseUrl/denuncias');
+    final response = await http.post(
       url,
+      body: {'usuario': "El ya tu sabe",
+      // 'titulo': "",
+      // 'descripcion': "",
+      // 'tipoDenuncia':"",
+      // 'lon':"",
+      // 'lat': "",
+      'imagenesList': images,
+      'audio': audio,
+      },
     );
-    final json = jsonDecode(response.body);
-    // return ComplaintDto.fromJsonList(json);
-    return [""];
+    print(response);
   }
 }

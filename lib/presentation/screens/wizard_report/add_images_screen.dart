@@ -1,19 +1,21 @@
 import 'dart:io';
 
 import 'package:bomberos_ya/config/theme/app_colors.dart';
+import 'package:bomberos_ya/presentation/providers/simple_report_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../config/theme/text_styles.dart';
 
-class AddImagesScreen extends StatefulWidget {
+class AddImagesScreen extends ConsumerStatefulWidget {
   const AddImagesScreen({super.key});
 
   @override
-  _AddImagesScreenState createState() => _AddImagesScreenState();
+  ConsumerState<AddImagesScreen> createState() => _AddImagesScreenState();
 }
 
-class _AddImagesScreenState extends State<AddImagesScreen> {
+class _AddImagesScreenState extends ConsumerState<AddImagesScreen> {
   List<XFile> selectedImages = [];
   int imageLimit = 4;
 
@@ -37,6 +39,7 @@ class _AddImagesScreenState extends State<AddImagesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = ref.read(simpleReportProvider);
     return Column(
       children: [
         Text(
@@ -121,7 +124,8 @@ class _AddImagesScreenState extends State<AddImagesScreen> {
             padding: const EdgeInsets.only(bottom: 32),
             child: ElevatedButton(
               onPressed: () {
-                // Agregar lógica para procesar las imágenes
+                provider.selectedImages = selectedImages;
+                provider.postData();
               },
               child: const Text("Aceptar"),
             ),
