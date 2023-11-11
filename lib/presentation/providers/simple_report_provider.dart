@@ -14,6 +14,7 @@ class _SimpleReportProvider extends ChangeNotifier {
   String audioBase64 = '';
   List<XFile> selectedImages = [];
   List<FireTypes> fireTypes = [];
+  bool isLoading = false;
   final services = ApiServices();
 
   _SimpleReportProvider() {
@@ -25,8 +26,11 @@ class _SimpleReportProvider extends ChangeNotifier {
   }
 
   void postData() async {
+    isLoading = true;
+    notifyListeners();
     final images = await Base64Converter.convertImagesToBase64(selectedImages);
     services.postReport(audioBase64, images);
-    
+    isLoading = false;
+    notifyListeners();
   }
 }
