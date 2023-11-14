@@ -29,7 +29,7 @@ class TypeOfFire extends ConsumerWidget {
               itemCount: provider.fireTypes.length,
               itemBuilder: (context, index) {
                 return InkWell(
-                  onTap: (){
+                  onTap: () {
                     provider.selectedType = provider.fireTypes[index];
                     goToNextPage();
                   },
@@ -54,23 +54,34 @@ class TypeOfFire extends ConsumerWidget {
                             topLeft: Radius.circular(20),
                             topRight: Radius.circular(20),
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Image.network(
-                              provider.fireTypes[index].imageUrl,
-                              height: 100,
-                              width: double.infinity,
-                              fit: BoxFit.cover,
+                          child: SizedBox(
+                            height: 100,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Image.network(
+                                provider.fireTypes[index].imageUrl,
+                                height: 100,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                                errorBuilder: ((context, error, stackTrace) {
+                                  // TODO: Add image
+                                  return Container(
+                                    color: Colors.red,
+                                  );
+                                }),
+                              ),
                             ),
                           ),
                         ),
                         Expanded(
                           child: Center(
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
                               child: Text(
                                 provider.fireTypes[index].nombre,
-                                style: TextStyles.regularSecondarySmallTextStyle,
+                                style:
+                                    TextStyles.regularSecondarySmallTextStyle,
                                 maxLines: 2,
                                 textAlign: TextAlign.center,
                               ),
