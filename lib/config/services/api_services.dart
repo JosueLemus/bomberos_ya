@@ -14,7 +14,7 @@ class ApiServices {
     );
     final json = jsonDecode(response.body);
     final jsonToSave = jsonEncode(response.body);
-    LocalStorageUtil.saveBackendResponse(jsonToSave, KeyTypes.fireTypesList);
+    LocalStorageUtil.saveLocalData(jsonToSave, KeyTypes.fireTypesList);
     return FireTypes.fromJsonList(json);
   }
 

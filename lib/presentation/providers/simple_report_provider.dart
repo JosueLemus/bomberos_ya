@@ -23,7 +23,7 @@ class _SimpleReportProvider extends ChangeNotifier {
   }
   void getFireTypes() async {
     final listString =
-        await LocalStorageUtil.getBackendResponse(KeyTypes.fireTypesList);
+        await LocalStorageUtil.getLocalData(KeyTypes.fireTypesList);
     if (listString != null) {
       final json = jsonDecode(listString);
       fireTypes = FireTypes.fromJsonList(json);

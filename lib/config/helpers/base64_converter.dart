@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 
 class Base64Converter {
   static Future<String> convertAudioToBase64(File audioFile) async {
-    if (audioFile != null && audioFile.existsSync()) {
+    if (audioFile.existsSync()) {
       List<int> audioBytes = await audioFile.readAsBytes();
       String base64Audio = base64Encode(audioBytes);
       return base64Audio;
@@ -14,7 +14,8 @@ class Base64Converter {
     }
   }
 
-  static Future<List<String>> convertImagesToBase64(List<XFile> imageFiles) async {
+  static Future<List<String>> convertImagesToBase64(
+      List<XFile> imageFiles) async {
     final List<String> base64Images = [];
 
     for (final imageFile in imageFiles) {
@@ -29,5 +30,4 @@ class Base64Converter {
 
     return base64Images;
   }
-
 }

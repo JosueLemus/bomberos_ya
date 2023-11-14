@@ -1,6 +1,7 @@
-import 'package:bomberos_ya/config/theme/app_colors.dart';
+import 'package:bomberos_ya/config/helpers/local_storage_util.dart';
 import 'package:bomberos_ya/config/theme/text_styles.dart';
 import 'package:bomberos_ya/presentation/providers/simple_report_provider.dart';
+import 'package:bomberos_ya/presentation/widgets/fire_type_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -28,70 +29,15 @@ class TypeOfFire extends ConsumerWidget {
               ),
               itemCount: provider.fireTypes.length,
               itemBuilder: (context, index) {
-                return InkWell(
-                  onTap: () {
-                    provider.selectedType = provider.fireTypes[index];
-                    goToNextPage();
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.secondaryText.withOpacity(0.2),
-                          spreadRadius: 5,
-                          blurRadius: 7,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      children: [
-                        ClipRRect(
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20),
-                          ),
-                          child: SizedBox(
-                            height: 100,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Image.network(
-                                provider.fireTypes[index].imageUrl,
-                                height: 100,
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                                errorBuilder: ((context, error, stackTrace) {
-                                  // TODO: Add image
-                                  return Container(
-                                    color: Colors.red,
-                                  );
-                                }),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Center(
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16),
-                              child: Text(
-                                provider.fireTypes[index].nombre,
-                                style:
-                                    TextStyles.regularSecondarySmallTextStyle,
-                                maxLines: 2,
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
+                return FireTypeCard(
+                    fireType: provider.fireTypes[index],
+                    onTap: () {
+                      final selectedType = provider.fireTypes[index];
+                      provider.selectedType = selectedType;
+                      goToNextPage();
+                      LocalStorageUtil.saveLocalData(
+                          selectedType.id, KeyTypes.selectedType);
+                    });
               },
             ),
           ),
