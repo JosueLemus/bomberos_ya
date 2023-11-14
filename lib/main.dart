@@ -1,7 +1,8 @@
-import 'package:bomberos_ya/presentation/screens/wizard_report/simple_report_screen.dart';
+import 'package:bomberos_ya/config/navigation/application_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'config/theme/light_theme.dart';
+import 'presentation/screens/screens.dart';
 
 void main() => runApp(const ProviderScope(child: MyApp()));
 
@@ -11,8 +12,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: SimpleReportScreen(),
+      initialRoute: '/',
       theme: AppTheme.lightTheme,
+      routes: getApplicationRoutes(),
+      onGenerateRoute: (RouteSettings settings) {
+        return MaterialPageRoute(builder: ((context) => const SplashScreen()));
+      },
     );
   }
 }

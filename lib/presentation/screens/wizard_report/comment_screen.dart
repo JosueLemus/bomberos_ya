@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:bomberos_ya/config/helpers/base64_converter.dart';
@@ -7,7 +6,6 @@ import 'package:bomberos_ya/presentation/providers/simple_report_provider.dart';
 import 'package:bomberos_ya/presentation/widgets/microphone_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:record/record.dart';
 import '../../widgets/custom_record_button.dart';
 
@@ -82,7 +80,8 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
   Future<void> sendAudio() async {
     if (audioPath.isNotEmpty) {
       try {
-        final base64Audio = await Base64Converter.convertAudioToBase64(File(audioPath));
+        final base64Audio =
+            await Base64Converter.convertAudioToBase64(File(audioPath));
         ref.read(simpleReportProvider).audioBase64 = base64Audio;
         // Envía base64Audio al backend o realiza otras operaciones según tus necesidades
         debugPrint('Audio en formato base64: $base64Audio');
@@ -103,8 +102,8 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            children: const [
+          const Column(
+            children: [
               Text(
                 "Agrega un comentario de la situación.",
                 style: TextStyles.boldSecondaryLargeTextStyle,
@@ -129,7 +128,6 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
             padding: const EdgeInsets.only(bottom: 32),
             child: Column(
               children: [
-                // Añade un botón para enviar el audio
                 ElevatedButton(
                   onPressed: sendAudio,
                   child: const Text('Enviar audio',

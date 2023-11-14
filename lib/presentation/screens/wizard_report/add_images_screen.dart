@@ -21,7 +21,8 @@ class _AddImagesScreenState extends ConsumerState<AddImagesScreen> {
 
   Future<void> _openCamera() async {
     final picker = ImagePicker();
-    final image = await picker.pickImage(source: ImageSource.camera, imageQuality: 5);
+    final image =
+        await picker.pickImage(source: ImageSource.camera, imageQuality: 5);
     if (image != null) {
       setState(() {
         if (selectedImages.length < imageLimit) {
@@ -119,19 +120,17 @@ class _AddImagesScreenState extends ConsumerState<AddImagesScreen> {
             ),
           ),
         ),
-        if (selectedImages.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 32),
-            child: ElevatedButton(
-              onPressed: () {
-                provider.selectedImages = selectedImages;
-                provider.postData();
-              },
-              child: const Text("Aceptar"),
-            ),
-          )
-        else
-          Container(),
+        // if (selectedImages.isNotEmpty)
+        Padding(
+          padding: const EdgeInsets.only(bottom: 32),
+          child: ElevatedButton(
+            onPressed: () {
+              provider.selectedImages = selectedImages;
+              provider.postData();
+            },
+            child: const Text("Aceptar"),
+          ),
+        )
       ],
     );
   }
