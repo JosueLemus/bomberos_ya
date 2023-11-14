@@ -8,7 +8,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'comment_screen.dart';
 
 class SimpleReportScreen extends ConsumerStatefulWidget {
-  const SimpleReportScreen({super.key});
+  final int initialPage;
+  const SimpleReportScreen({super.key, this.initialPage = 0});
 
   @override
   SimpleReportScreenState createState() => SimpleReportScreenState();
@@ -18,6 +19,19 @@ class SimpleReportScreenState extends ConsumerState<SimpleReportScreen> {
   final PageController _pageController = PageController(initialPage: 0);
   int _currentPage = 0;
   final int _totalPages = 3;
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(milliseconds: 100), () {
+      if (_currentPage != widget.initialPage) {
+        setState(() {
+          _currentPage = widget.initialPage;
+        });
+        _pageController.jumpToPage(widget.initialPage);
+      }
+    });
+  }
+
   void nextPage() {
     _pageController.nextPage(
       duration: const Duration(milliseconds: 500),
@@ -80,15 +94,16 @@ class SimpleReportScreenState extends ConsumerState<SimpleReportScreen> {
             ],
           ),
         ),
-        if(provider.isLoading)Expanded(
-            child: Container(
-          color: Colors.black.withOpacity(0.5),
-          child: const Center(
-            child: CircularProgressIndicator(
-              color: AppColors.primaryColor,
+        if (provider.isLoading)
+          Expanded(
+              child: Container(
+            color: Colors.black.withOpacity(0.5),
+            child: const Center(
+              child: CircularProgressIndicator(
+                color: AppColors.primaryColor,
+              ),
             ),
-          ),
-        ))
+          ))
       ],
     );
   }

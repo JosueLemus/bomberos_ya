@@ -36,7 +36,7 @@ class TypeOfFire extends ConsumerWidget {
                       provider.selectedType = selectedType;
                       goToNextPage();
                       LocalStorageUtil.saveLocalData(
-                          selectedType.id, KeyTypes.selectedType);
+                          selectedType.nombre, KeyTypes.selectedType);
                     });
               },
             ),
