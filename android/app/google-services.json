@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "137201988770",
+    "firebase_url": "https://notetaking-39230-default-rtdb.firebaseio.com",
+    "project_id": "notetaking-39230",
+    "storage_bucket": "notetaking-39230.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:137201988770:android:82585688e1c0194f5693fb",
+        "android_client_info": {
+          "package_name": "com.example.bomberos_ya"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "137201988770-8jvfdp3tqlnc7odjcujg7b13kcuaohgg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3l68d7NG9_261jeqig4DFsWAFZJ1Wu6Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "137201988770-8jvfdp3tqlnc7odjcujg7b13kcuaohgg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:137201988770:android:af7175da0bbb27535693fb",
+        "android_client_info": {
+          "package_name": "com.example.flutterbackgroundservice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "137201988770-8jvfdp3tqlnc7odjcujg7b13kcuaohgg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3l68d7NG9_261jeqig4DFsWAFZJ1Wu6Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "137201988770-8jvfdp3tqlnc7odjcujg7b13kcuaohgg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
