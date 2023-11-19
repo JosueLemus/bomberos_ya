@@ -1,4 +1,5 @@
 import 'package:bomberos_ya/config/helpers/local_storage_util.dart';
+import 'package:bomberos_ya/config/theme/app_colors.dart';
 import 'package:bomberos_ya/config/theme/text_styles.dart';
 import 'package:bomberos_ya/presentation/providers/simple_report_provider.dart';
 import 'package:bomberos_ya/presentation/widgets/fire_type_card.dart';
@@ -20,27 +21,43 @@ class TypeOfFire extends ConsumerWidget {
               style: TextStyles.boldSecondaryLargeTextStyle),
         ),
         Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 1.0,
-              ),
-              itemCount: provider.fireTypes.length,
-              itemBuilder: (context, index) {
-                return FireTypeCard(
-                    fireType: provider.fireTypes[index],
-                    onTap: () {
-                      final selectedType = provider.fireTypes[index];
-                      provider.selectedType = selectedType;
-                      goToNextPage();
-                      LocalStorageUtil.saveLocalData(
-                          selectedType.nombre, KeyTypes.selectedType);
-                    });
-              },
-            ),
-          ),
+          child: provider.noDataFound
+              ? Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Center(
+                    child: TextButton(
+                        onPressed: () => provider.getFireTypes(),
+                        child: const Text(
+                          "Tipos de incendio no encontrados. Toca para volver a intentar.",
+                          style: TextStyle(
+                              color: AppColors.primaryColor,
+                              fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
+                        )),
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 1.0,
+                    ),
+                    itemCount: provider.fireTypes.length,
+                    itemBuilder: (context, index) {
+                      return FireTypeCard(
+                          fireType: provider.fireTypes[index],
+                          onTap: () {
+                            final selectedType = provider.fireTypes[index];
+                            provider.selectedType = selectedType;
+                            goToNextPage();
+                            LocalStorageUtil.saveLocalData(
+                                selectedType.nombre, KeyTypes.selectedType);
+                          });
+                    },
+                  ),
+                ),
         ),
       ],
     );

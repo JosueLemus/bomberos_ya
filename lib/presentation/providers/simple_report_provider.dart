@@ -1,11 +1,9 @@
-import 'dart:convert';
 import 'package:bomberos_ya/config/services/api_services.dart';
 import 'package:bomberos_ya/models/fire_types.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../config/helpers/base64_converter.dart';
-import '../../config/helpers/local_storage_util.dart';
 
 final simpleReportProvider =
     ChangeNotifierProvider((ref) => _SimpleReportProvider());
@@ -16,25 +14,16 @@ class _SimpleReportProvider extends ChangeNotifier {
   List<XFile> selectedImages = [];
   List<FireTypes> fireTypes = [];
   bool isLoading = false;
+  bool noDataFound = false;
   final services = ApiServices();
 
   _SimpleReportProvider() {
     getFireTypes();
   }
   void getFireTypes() async {
-    final listString =
-        await LocalStorageUtil.getLocalData(KeyTypes.fireTypesList);
-    if (listString != null) {
-      final json = jsonDecode(listString);
-      fireTypes = FireTypes.fromJsonList(json);
-      notifyListeners();
-    }
-
-    final newFireTypes = await services.getFireTypes();
-    if (newFireTypes != fireTypes) {
-      fireTypes = newFireTypes;
-      notifyListeners();
-    }
+    fireTypes = await services.getFireTypes();
+    noDataFound = fireTypes.isEmpty;
+    notifyListeners();
   }
 
   void postData() async {
