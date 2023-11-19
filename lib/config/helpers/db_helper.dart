@@ -35,7 +35,17 @@ class DBHelper {
             id TEXT PRIMARY KEY,
             nombre TEXT,
             descripcion TEXT,
-            imageUrl TEXT
+            imageUrl TEXT,
+            status TEXT
+          )
+        ''');
+
+        await db.execute('''
+          CREATE TABLE IF NOT EXISTS fire_reports (
+            id TEXT PRIMARY KEY,
+            fireTypeId TEXT,
+            audioData TEXT,
+            imageData TEXT
           )
         ''');
       },
@@ -51,6 +61,26 @@ class DBHelper {
     Database db = await database;
     List<Map<String, dynamic>> results = await db.query('fire_types');
     return results.map((map) => FireTypes.fromJson(map)).toList();
+  }
+
+  Future<int> insertFireReport({
+    required String id,
+    required String fireTypeId,
+    String? audioData,
+    String? imageData,
+  }) async {
+    Database db = await database;
+    return await db.insert('fire_reports', {
+      'id': id,
+      'fireTypeId': fireTypeId,
+      'audioData': audioData,
+      'imageData': imageData,
+    });
+  }
+
+  Future<List<Map<String, dynamic>>> getFireReports() async {
+    Database db = await database;
+    return await db.query('fire_reports');
   }
 
   Future<DateTime?> getLastModifiedTime() async {
@@ -75,6 +105,33 @@ class DBHelper {
       fireType.toJson(),
       where: 'id = ?',
       whereArgs: [fireType.id],
+    );
+  }
+
+  Future<int> updateFireReport({
+    required String id,
+    String? fireTypeId,
+    String? audioData,
+    String? imageData,
+  }) async {
+    Database db = await database;
+
+    Map<String, dynamic> updateData = {};
+    if (fireTypeId != null) {
+      updateData['fireTypeId'] = fireTypeId;
+    }
+    if (audioData != null) {
+      updateData['audioData'] = audioData;
+    }
+    if (imageData != null) {
+      updateData['imageData'] = imageData;
+    }
+
+    return await db.update(
+      'fire_reports',
+      updateData,
+      where: 'id = ?',
+      whereArgs: [id],
     );
   }
 }

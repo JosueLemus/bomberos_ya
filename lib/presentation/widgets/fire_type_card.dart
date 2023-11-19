@@ -6,7 +6,12 @@ import 'package:flutter/material.dart';
 class FireTypeCard extends StatelessWidget {
   final FireTypes fireType;
   final void Function() onTap;
-  const FireTypeCard({super.key, required this.fireType, required this.onTap});
+  final bool isSelected;
+  const FireTypeCard(
+      {super.key,
+      required this.fireType,
+      required this.onTap,
+      required this.isSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +24,9 @@ class FireTypeCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: AppColors.secondaryText.withOpacity(0.2),
+              color: isSelected
+                  ? AppColors.primaryColor
+                  : AppColors.secondaryText.withOpacity(0.2),
               spreadRadius: 5,
               blurRadius: 7,
               offset: const Offset(0, 3),

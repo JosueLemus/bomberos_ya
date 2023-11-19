@@ -1,4 +1,3 @@
-import 'package:bomberos_ya/config/helpers/local_storage_util.dart';
 import 'package:bomberos_ya/config/theme/app_colors.dart';
 import 'package:bomberos_ya/config/theme/text_styles.dart';
 import 'package:bomberos_ya/presentation/providers/simple_report_provider.dart';
@@ -47,13 +46,13 @@ class TypeOfFire extends ConsumerWidget {
                     itemCount: provider.fireTypes.length,
                     itemBuilder: (context, index) {
                       return FireTypeCard(
+                          isSelected: provider.selectedType ==
+                              provider.fireTypes[index].id,
                           fireType: provider.fireTypes[index],
                           onTap: () {
                             final selectedType = provider.fireTypes[index];
-                            provider.selectedType = selectedType;
+                            provider.updateSelectedType(selectedType);
                             goToNextPage();
-                            LocalStorageUtil.saveLocalData(
-                                selectedType.nombre, KeyTypes.selectedType);
                           });
                     },
                   ),

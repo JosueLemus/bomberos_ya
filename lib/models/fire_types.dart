@@ -11,12 +11,14 @@ class FireTypes {
   final String nombre;
   final String descripcion;
   final String imageUrl;
+  final String status;
 
   FireTypes({
     required this.id,
     required this.nombre,
     required this.descripcion,
     required this.imageUrl,
+    required this.status,
   });
 
   factory FireTypes.fromJson(Map<String, dynamic> json) => FireTypes(
@@ -24,6 +26,7 @@ class FireTypes {
         nombre: json["nombre"],
         descripcion: json["descripcion"],
         imageUrl: json["imageUrl"],
+        status: json["status"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -31,6 +34,7 @@ class FireTypes {
         "nombre": nombre,
         "descripcion": descripcion,
         "imageUrl": imageUrl,
+        "status": status
       };
 
   static List<FireTypes> fromJsonList(List<dynamic> json) {
