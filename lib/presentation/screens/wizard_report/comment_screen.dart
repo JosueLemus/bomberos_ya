@@ -21,7 +21,6 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
   late Record audioRecord;
   late AudioPlayer audioPlayer;
   bool isRecorindg = false;
-  String audioPath = '';
   @override
   void initState() {
     audioPlayer = AudioPlayer();
@@ -57,10 +56,13 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
       return;
     }
     try {
+      final provider = ref.read(simpleReportProvider);
       String? path = await audioRecord.stop();
+      if (path != null) {
+        provider.saveRecord(path);
+      }
       setState(() {
         isRecorindg = false;
-        audioPath = path ?? '';
       });
     } catch (e) {
       debugPrint("Error Stopping record: $e");
@@ -69,7 +71,8 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
 
   Future<void> playRecording() async {
     try {
-      Source urlSource = UrlSource(audioPath);
+      final provider = ref.read(simpleReportProvider);
+      Source urlSource = UrlSource(provider.audioPath ?? "");
       await audioPlayer.play(urlSource);
     } catch (e) {
       debugPrint('Error playing Recording: $e');
@@ -78,6 +81,8 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
 
   // Añade este método para enviar el audio
   Future<void> sendAudio() async {
+    final provider = ref.read(simpleReportProvider);
+    final audioPath = provider.audioPath ?? "";
     if (audioPath.isNotEmpty) {
       try {
         final base64Audio =
@@ -97,6 +102,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = ref.watch(simpleReportProvider);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
@@ -121,7 +127,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
           MicrophoneButton(startRecording: startRecording),
           if (isRecorindg)
             CustomRecordButton(icon: Icons.stop, onTap: stopRecording),
-          if (!isRecorindg && audioPath.isNotEmpty)
+          if (!isRecorindg && (provider.audioPath?.isNotEmpty ?? false))
             CustomRecordButton(
                 icon: Icons.play_arrow_rounded, onTap: playRecording),
           Padding(
@@ -129,15 +135,16 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
             child: Column(
               children: [
                 ElevatedButton(
-                  onPressed: sendAudio,
+                  onPressed: provider.audioPath != null ? sendAudio : null,
+                  style: provider.audioPath != null
+                      ? null
+                      : ElevatedButton.styleFrom(
+                          foregroundColor: Colors.grey,
+                          backgroundColor: Colors.grey,
+                          textStyle: const TextStyle(color: Colors.white)),
                   child: const Text('Enviar audio',
                       style: TextStyles.filledButtonTextStyle),
-                ),
-                TextButton(
-                  onPressed: () {},
-                  child: const Text("Enviar texto",
-                      style: TextStyles.textButtonTextStyle),
-                ),
+                )
               ],
             ),
           ),

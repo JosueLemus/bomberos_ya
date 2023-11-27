@@ -1,4 +1,5 @@
 import 'package:bomberos_ya/config/helpers/db_helper.dart';
+import 'package:bomberos_ya/config/helpers/local_storage_util.dart';
 import 'package:bomberos_ya/config/services/api_services.dart';
 import 'package:bomberos_ya/models/fire_types.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ final simpleReportProvider =
 
 class _SimpleReportProvider extends ChangeNotifier {
   String? selectedType;
+  String? audioPath;
   String audioBase64 = '';
   List<XFile> selectedImages = [];
   List<FireTypes> fireTypes = [];
@@ -21,7 +23,15 @@ class _SimpleReportProvider extends ChangeNotifier {
   final dbHelper = DBHelper();
   _SimpleReportProvider() {
     getFireTypes();
+    initData();
   }
+
+  void initData() async {
+    selectedType = await LocalStorageUtil.getLocalData(KeyTypes.selectedType);
+    audioPath = await LocalStorageUtil.getLocalData(KeyTypes.currentRecording);
+    notifyListeners();
+  }
+
   void getFireTypes() async {
     // Get from sqlite
     fireTypes = await dbHelper.getFireTypes();
@@ -83,7 +93,14 @@ class _SimpleReportProvider extends ChangeNotifier {
   }
 
   void updateSelectedType(FireTypes fireType) {
-    selectedType = fireType.id;
-    dbHelper.insertFireReport(id: "123", fireTypeId: selectedType ?? "");
+    String fireTypeId = fireType.id;
+    selectedType = fireTypeId;
+    LocalStorageUtil.saveLocalData(fireTypeId, KeyTypes.selectedType);
+  }
+
+  void saveRecord(String audioPath) {
+    this.audioPath = audioPath;
+    LocalStorageUtil.saveLocalData(audioPath, KeyTypes.currentRecording);
+    notifyListeners();
   }
 }

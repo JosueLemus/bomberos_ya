@@ -22,26 +22,26 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void verifyPreviousReport() async {
-    // final selectedType =
-    //     await LocalStorageUtil.getLocalData(KeyTypes.selectedType);
-    // if (selectedType != null && mounted) {
-    //   AppAlerts.showAlertMssg(
-    //       title: "Tienes un reporte en progreso",
-    //       description:
-    //           "Quieres continuar con tu reporte de tipo $selectedType?",
-    //       context: context,
-    //       onClose: () {
-    //         Navigator.of(context).pushNamed(Routes.reportIncident);
+    final selectedType =
+        await LocalStorageUtil.getLocalData(KeyTypes.selectedType);
+    if (selectedType != null && mounted) {
+      AppAlerts.showAlertMssg(
+          title: "Tienes un reporte en progreso",
+          description:
+              "Quieres continuar con tu reporte de tipo $selectedType?",
+          context: context,
+          onClose: () {
+            Navigator.of(context).pushNamed(Routes.reportIncident);
 
-    //         Navigator.push(
-    //           context,
-    //           MaterialPageRoute(
-    //               builder: (context) => const SimpleReportScreen(
-    //                     initialPage: 1,
-    //                   )),
-    //         );
-    //       });
-    // }
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const SimpleReportScreen(
+                        initialPage: 1,
+                      )),
+            );
+          });
+    }
   }
 
   @override

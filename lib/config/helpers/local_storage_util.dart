@@ -10,6 +10,24 @@ class LocalStorageUtil {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(key.name);
   }
+
+  static Future<void> saveArrayList(
+      List<String> arrayString, KeyTypes key) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final List<String> serializedList =
+        arrayString.map((element) => element.toString()).toList();
+    prefs.setStringList(key.name, serializedList);
+  }
+
+  static Future<List<String>> getArrayList(KeyTypes key) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final List<String>? serializedList = prefs.getStringList(key.name);
+    if (serializedList != null) {
+      return serializedList;
+    } else {
+      return [];
+    }
+  }
 }
 
-enum KeyTypes { fireTypesList, selectedType, currentRecording, selectedPhotos }
+enum KeyTypes { fireTypesList, selectedType, currentRecording, imagesList }
