@@ -8,43 +8,25 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../config/theme/text_styles.dart';
 
-class AddImagesScreen extends ConsumerStatefulWidget {
+class AddImagesScreen extends ConsumerWidget {
   const AddImagesScreen({super.key});
 
   @override
-  ConsumerState<AddImagesScreen> createState() => _AddImagesScreenState();
-}
-
-class _AddImagesScreenState extends ConsumerState<AddImagesScreen> {
-  List<XFile> selectedImages = [];
-  int imageLimit = 4;
-
-  Future<void> _openCamera() async {
-    final picker = ImagePicker();
-    final image =
-        await picker.pickImage(source: ImageSource.camera, imageQuality: 5);
-    if (image != null) {
-      setState(() {
-        if (selectedImages.length < imageLimit) {
-          selectedImages.add(image);
-        }
-      });
+  Widget build(BuildContext context, ref) {
+    final provider = ref.watch(simpleReportProvider);
+    Future<void> openCamera() async {
+      final picker = ImagePicker();
+      final image =
+          await picker.pickImage(source: ImageSource.camera, imageQuality: 5);
+      if (image != null) {
+        provider.addImage(image.path);
+      }
     }
-  }
 
-  void _removeImage(int index) {
-    setState(() {
-      selectedImages.removeAt(index);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final provider = ref.read(simpleReportProvider);
     return Column(
       children: [
         Text(
-          "Agrega imágenes de la situación (${selectedImages.length} de $imageLimit)",
+          "Agrega imágenes de la situación (${provider.selectedImages.length} de ${provider.imageLimit})",
           style: TextStyles.boldSecondaryLargeTextStyle,
         ),
         Expanded(
@@ -53,10 +35,10 @@ class _AddImagesScreenState extends ConsumerState<AddImagesScreen> {
             child: GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2, mainAxisSpacing: 16, crossAxisSpacing: 16),
-              itemCount: selectedImages.length + 1,
+              itemCount: provider.selectedImages.length + 1,
               itemBuilder: (context, index) {
-                if (index == selectedImages.length) {
-                  if (selectedImages.length < imageLimit) {
+                if (index == provider.selectedImages.length) {
+                  if (provider.selectedImages.length < provider.imageLimit) {
                     return Container(
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -71,7 +53,7 @@ class _AddImagesScreenState extends ConsumerState<AddImagesScreen> {
                         ],
                       ),
                       child: InkWell(
-                        onTap: _openCamera,
+                        onTap: openCamera,
                         child: Container(
                           alignment: Alignment.center,
                           child: const Icon(
@@ -90,19 +72,19 @@ class _AddImagesScreenState extends ConsumerState<AddImagesScreen> {
                     borderRadius: BorderRadius.circular(20),
                     child: InkWell(
                       onTap: () {
-                        if (selectedImages.isNotEmpty) {
-                          _removeImage(index);
+                        if (provider.selectedImages.isNotEmpty) {
+                          provider.removeImage(index);
                         }
                       },
                       child: Stack(
                         children: [
                           Image.file(
-                            File(selectedImages[index].path),
+                            File(provider.selectedImages[index]),
                             width: double.infinity,
                             height: double.infinity,
                             fit: BoxFit.cover,
                           ),
-                          if (selectedImages.isNotEmpty)
+                          if (provider.selectedImages.isNotEmpty)
                             const Positioned(
                               top: 0,
                               right: 0,
@@ -125,7 +107,6 @@ class _AddImagesScreenState extends ConsumerState<AddImagesScreen> {
           padding: const EdgeInsets.only(bottom: 32),
           child: ElevatedButton(
             onPressed: () {
-              provider.selectedImages = selectedImages;
               provider.postData();
             },
             child: const Text("Aceptar"),
