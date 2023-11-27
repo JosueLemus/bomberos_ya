@@ -1,6 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:bomberos_ya/config/theme/text_styles.dart';
 import 'package:bomberos_ya/presentation/providers/simple_report_provider.dart';
+import 'package:bomberos_ya/presentation/widgets/app_button.dart';
 import 'package:bomberos_ya/presentation/widgets/microphone_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,8 +9,7 @@ import 'package:record/record.dart';
 import '../../widgets/custom_record_button.dart';
 
 class CommentsScreen extends ConsumerStatefulWidget {
-  final Function goToNextPage;
-  const CommentsScreen({super.key, required this.goToNextPage});
+  const CommentsScreen({super.key});
 
   @override
   ConsumerState<CommentsScreen> createState() => _CommentsScreenState();
@@ -107,25 +107,14 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
           if (!isRecorindg && (provider.audioPath?.isNotEmpty ?? false))
             CustomRecordButton(
                 icon: Icons.play_arrow_rounded, onTap: playRecording),
-          // Padding(
-          //   padding: const EdgeInsets.only(bottom: 32),
-          //   child: Column(
-          //     children: [
-          //       ElevatedButton(
-          //         onPressed: () => widget.goToNextPage(),
-          //         style: (provider.audioPath != null || !isRecorindg)
-          //             ? null
-          //             : ElevatedButton.styleFrom(
-          //                 foregroundColor: Colors.grey,
-          //                 backgroundColor: Colors.grey,
-          //                 textStyle: const TextStyle(color: Colors.white)),
-          //         child: const Text('Enviar audio',
-          //             style: TextStyles.filledButtonTextStyle),
-          //       )
-          //     ],
-          //   ),
-          // ),
-          SizedBox(child: Image.asset("assets/frequency_image.gif"))
+          AppButton(
+            onPressed: (provider.audioPath == null || isRecorindg)
+                ? null
+                : provider.goToNextPage,
+            text: "Enviar audio",
+            padding: const EdgeInsets.only(bottom: 32),
+          )
+          // Image.asset("assets/frequency_image.gif")
         ],
       ),
     );

@@ -7,14 +7,10 @@ class AppTheme {
     primaryColor: AppColors.primaryBackground,
     scaffoldBackgroundColor: AppColors.primaryBackground,
     elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ButtonStyle(
-            backgroundColor: MaterialStateColor.resolveWith(
-                (states) => AppColors.primaryColor)),),
-                textButtonTheme: TextButtonThemeData(
-                  style: ButtonStyle(
-                    textStyle: MaterialStateProperty.resolveWith((states) => TextStyle(color: Colors.green))
-                  )
-                ),
+      style: ButtonStyle(
+          backgroundColor: MaterialStateColor.resolveWith(
+              (states) => AppColors.primaryColor)),
+    ),
     appBarTheme: const AppBarTheme(
       elevation: 0,
       backgroundColor: AppColors.primaryBackground,
@@ -23,6 +19,21 @@ class AppTheme {
         color: AppColors.primaryText,
         fontSize: 20,
         fontWeight: FontWeight.bold,
+      ),
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: ButtonStyle(
+        foregroundColor: MaterialStateColor.resolveWith(
+          (states) {
+            if (states.contains(MaterialState.disabled)) {
+              return Colors.grey;
+            }
+            return AppColors.primaryColor;
+          },
+        ),
+        overlayColor: MaterialStateColor.resolveWith(
+          (states) => Colors.transparent,
+        ),
       ),
     ),
   );

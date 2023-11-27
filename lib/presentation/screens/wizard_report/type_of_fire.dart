@@ -6,8 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TypeOfFire extends ConsumerWidget {
-  final Function goToNextPage;
-  const TypeOfFire({super.key, required this.goToNextPage});
+  const TypeOfFire({super.key});
 
   @override
   Widget build(BuildContext context, ref) {
@@ -52,7 +51,7 @@ class TypeOfFire extends ConsumerWidget {
                           onTap: () {
                             final selectedType = provider.fireTypes[index];
                             provider.updateSelectedType(selectedType);
-                            goToNextPage();
+                            // provider.goToNextPage();
                           });
                     },
                   ),

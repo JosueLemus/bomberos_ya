@@ -13,6 +13,7 @@ final simpleReportProvider =
     ChangeNotifierProvider((ref) => _SimpleReportProvider());
 
 class _SimpleReportProvider extends ChangeNotifier {
+  int currentPage = 0;
   String? selectedType;
   String? audioPath;
   List<FireTypes> fireTypes = [];
@@ -28,10 +29,41 @@ class _SimpleReportProvider extends ChangeNotifier {
     initData();
   }
 
+  void setPage(int page) {
+    currentPage = page;
+    notifyListeners();
+  }
+
+  void goToNextPage() {
+    if (currentPage < 2) {
+      currentPage++;
+      notifyListeners();
+    }
+  }
+
+  void goToPreviousPage() {
+    if (currentPage > 0) {
+      currentPage--;
+      notifyListeners();
+    }
+  }
+
   void initData() async {
     selectedType = await LocalStorageUtil.getLocalData(KeyTypes.selectedType);
     audioPath = await LocalStorageUtil.getLocalData(KeyTypes.currentRecording);
     selectedImages = await LocalStorageUtil.getArrayList(KeyTypes.imagesList);
+
+    if (selectedImages.isNotEmpty) {
+      currentPage = 2;
+    } else {
+      if (audioPath != null) {
+        currentPage = 2;
+      } else {
+        if (selectedType != null) {
+          currentPage = 1;
+        }
+      }
+    }
     notifyListeners();
   }
 

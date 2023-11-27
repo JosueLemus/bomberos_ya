@@ -1,4 +1,5 @@
 import 'package:bomberos_ya/config/theme/app_colors.dart';
+import 'package:bomberos_ya/config/theme/text_styles.dart';
 import 'package:bomberos_ya/presentation/providers/simple_report_provider.dart';
 import 'package:bomberos_ya/presentation/screens/wizard_report/add_images_screen.dart';
 import 'package:bomberos_ya/presentation/screens/wizard_report/type_of_fire.dart';
@@ -8,8 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'comment_screen.dart';
 
 class SimpleReportScreen extends ConsumerStatefulWidget {
-  final int initialPage;
-  const SimpleReportScreen({super.key, this.initialPage = 0});
+  const SimpleReportScreen({super.key});
 
   @override
   SimpleReportScreenState createState() => SimpleReportScreenState();
@@ -17,19 +17,11 @@ class SimpleReportScreen extends ConsumerStatefulWidget {
 
 class SimpleReportScreenState extends ConsumerState<SimpleReportScreen> {
   final PageController _pageController = PageController(initialPage: 0);
-  int _currentPage = 0;
-  final int _totalPages = 3;
+  int currentPage = 0;
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
-    Future.delayed(const Duration(milliseconds: 100), () {
-      if (_currentPage != widget.initialPage) {
-        setState(() {
-          _currentPage = widget.initialPage;
-        });
-        _pageController.jumpToPage(widget.initialPage);
-      }
-    });
   }
 
   void nextPage() {
@@ -45,10 +37,15 @@ class SimpleReportScreenState extends ConsumerState<SimpleReportScreen> {
       curve: Curves.ease,
     );
   }
+  // void
 
   @override
   Widget build(BuildContext context) {
     final provider = ref.watch(simpleReportProvider);
+    if (mounted && currentPage != provider.currentPage) {
+      _pageController.jumpToPage(provider.currentPage);
+      currentPage = provider.currentPage;
+    }
     return Stack(
       children: [
         Scaffold(
@@ -60,35 +57,47 @@ class SimpleReportScreenState extends ConsumerState<SimpleReportScreen> {
               Expanded(
                 child: PageView(
                   controller: _pageController,
-                  onPageChanged: (int page) {
-                    setState(() {
-                      _currentPage = page;
-                    });
-                  },
-                  children: [
-                    TypeOfFire(goToNextPage: nextPage),
-                    CommentsScreen(goToNextPage: nextPage),
-                    const AddImagesScreen()
+                  // physics: const NeverScrollableScrollPhysics(),
+                  onPageChanged: provider.setPage,
+                  children: const [
+                    TypeOfFire(),
+                    CommentsScreen(),
+                    AddImagesScreen()
                   ],
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(bottom: 32),
+                padding: const EdgeInsets.only(bottom: 32, left: 23, right: 23),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(_totalPages, (index) {
-                    return Container(
-                      width: 15.0,
-                      height: 15.0,
-                      margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: _currentPage == index
-                            ? AppColors.primaryColor
-                            : AppColors.secondaryText.withOpacity(0.7),
-                      ),
-                    );
-                  }),
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                        onPressed: provider.currentPage == 0
+                            ? null
+                            : provider.goToPreviousPage,
+                        child: const Text("Anterior")),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(3, (index) {
+                        return Container(
+                          width: 15.0,
+                          height: 15.0,
+                          margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: provider.currentPage == index
+                                ? AppColors.primaryColor
+                                : AppColors.secondaryText.withOpacity(0.7),
+                          ),
+                        );
+                      }),
+                    ),
+                    TextButton(
+                        onPressed: provider.currentPage == 2
+                            ? null
+                            : provider.goToNextPage,
+                        child: const Text("Siguiente")),
+                  ],
                 ),
               ),
             ],
