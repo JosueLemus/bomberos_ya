@@ -1,6 +1,4 @@
-import 'dart:io';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:bomberos_ya/config/helpers/base64_converter.dart';
 import 'package:bomberos_ya/config/theme/text_styles.dart';
 import 'package:bomberos_ya/presentation/providers/simple_report_provider.dart';
 import 'package:bomberos_ya/presentation/widgets/microphone_button.dart';
@@ -79,27 +77,6 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
     }
   }
 
-  // Añade este método para enviar el audio
-  Future<void> sendAudio() async {
-    final provider = ref.read(simpleReportProvider);
-    final audioPath = provider.audioPath ?? "";
-    if (audioPath.isNotEmpty) {
-      try {
-        final base64Audio =
-            await Base64Converter.convertAudioToBase64(File(audioPath));
-        ref.read(simpleReportProvider).audioBase64 = base64Audio;
-        // Envía base64Audio al backend o realiza otras operaciones según tus necesidades
-        debugPrint('Audio en formato base64: $base64Audio');
-        widget.goToNextPage();
-      } catch (e) {
-        debugPrint('Error al enviar el audio: $e');
-      }
-    } else {
-      // Maneja el caso en el que no hay audio grabado
-      debugPrint('No hay audio grabado para enviar');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final provider = ref.watch(simpleReportProvider);
@@ -130,24 +107,25 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
           if (!isRecorindg && (provider.audioPath?.isNotEmpty ?? false))
             CustomRecordButton(
                 icon: Icons.play_arrow_rounded, onTap: playRecording),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 32),
-            child: Column(
-              children: [
-                ElevatedButton(
-                  onPressed: provider.audioPath != null ? sendAudio : null,
-                  style: provider.audioPath != null
-                      ? null
-                      : ElevatedButton.styleFrom(
-                          foregroundColor: Colors.grey,
-                          backgroundColor: Colors.grey,
-                          textStyle: const TextStyle(color: Colors.white)),
-                  child: const Text('Enviar audio',
-                      style: TextStyles.filledButtonTextStyle),
-                )
-              ],
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.only(bottom: 32),
+          //   child: Column(
+          //     children: [
+          //       ElevatedButton(
+          //         onPressed: () => widget.goToNextPage(),
+          //         style: (provider.audioPath != null || !isRecorindg)
+          //             ? null
+          //             : ElevatedButton.styleFrom(
+          //                 foregroundColor: Colors.grey,
+          //                 backgroundColor: Colors.grey,
+          //                 textStyle: const TextStyle(color: Colors.white)),
+          //         child: const Text('Enviar audio',
+          //             style: TextStyles.filledButtonTextStyle),
+          //       )
+          //     ],
+          //   ),
+          // ),
+          SizedBox(child: Image.asset("assets/frequency_image.gif"))
         ],
       ),
     );

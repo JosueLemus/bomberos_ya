@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bomberos_ya/config/theme/app_colors.dart';
 import 'package:bomberos_ya/presentation/providers/simple_report_provider.dart';
+import 'package:bomberos_ya/presentation/widgets/app_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -16,8 +17,9 @@ class AddImagesScreen extends ConsumerWidget {
     final provider = ref.watch(simpleReportProvider);
     Future<void> openCamera() async {
       final picker = ImagePicker();
-      final image =
-          await picker.pickImage(source: ImageSource.camera, imageQuality: 5);
+      // final image =
+      //     await picker.pickImage(source: ImageSource.camera, imageQuality: 5);
+      final image = await picker.pickImage(source: ImageSource.camera);
       if (image != null) {
         provider.addImage(image.path);
       }
@@ -102,16 +104,11 @@ class AddImagesScreen extends ConsumerWidget {
             ),
           ),
         ),
-        // if (selectedImages.isNotEmpty)
-        Padding(
-          padding: const EdgeInsets.only(bottom: 32),
-          child: ElevatedButton(
-            onPressed: () {
-              provider.postData();
-            },
-            child: const Text("Aceptar"),
-          ),
-        )
+        AppButton(
+          onPressed: provider.selectedImages.isEmpty ? null : provider.postData,
+          text: "Aceptar",
+          padding: const EdgeInsets.only(bottom: 32, left: 23, right: 23),
+        ),
       ],
     );
   }

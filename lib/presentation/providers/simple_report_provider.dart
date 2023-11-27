@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:bomberos_ya/config/helpers/base64_converter.dart';
 import 'package:bomberos_ya/config/helpers/db_helper.dart';
 import 'package:bomberos_ya/config/helpers/local_storage_util.dart';
 import 'package:bomberos_ya/config/services/api_services.dart';
@@ -12,7 +15,6 @@ final simpleReportProvider =
 class _SimpleReportProvider extends ChangeNotifier {
   String? selectedType;
   String? audioPath;
-  String audioBase64 = '';
   List<FireTypes> fireTypes = [];
   bool isLoading = false;
   bool noDataFound = false;
@@ -20,6 +22,7 @@ class _SimpleReportProvider extends ChangeNotifier {
   final dbHelper = DBHelper();
   List<String> selectedImages = [];
   int imageLimit = 4;
+  String currentProcess = "";
   _SimpleReportProvider() {
     getFireTypes();
     initData();
@@ -84,12 +87,26 @@ class _SimpleReportProvider extends ChangeNotifier {
   }
 
   void postData() async {
-    // isLoading = true;
-    // notifyListeners();
-    // final images = await Base64Converter.convertImagesToBase64(selectedImages);
-    // services.postReport(audioBase64, images);
-    // isLoading = false;
-    notifyListeners();
+    try {
+      isLoading = true;
+      currentProcess = "Convirtiendo imagenes";
+      notifyListeners();
+      final images =
+          await Base64Converter.convertImagesToBase64(selectedImages);
+      currentProcess = "Convirtiendo audio";
+      notifyListeners();
+      final audioBase64 =
+          await Base64Converter.convertAudioToBase64(File(audioPath ?? ""));
+      currentProcess = "Enviando datos";
+      notifyListeners();
+      services.postReport(audioBase64, images);
+      isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      // Manejar la excepción aquí
+      print('Error en postData: $e');
+      // Puedes realizar acciones específicas según el tipo de error
+    }
   }
 
   void updateSelectedType(FireTypes fireType) {

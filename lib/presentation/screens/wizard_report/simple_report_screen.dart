@@ -95,15 +95,30 @@ class SimpleReportScreenState extends ConsumerState<SimpleReportScreen> {
           ),
         ),
         if (provider.isLoading)
-          Expanded(
-              child: Container(
-            color: Colors.black.withOpacity(0.5),
-            child: const Center(
-              child: CircularProgressIndicator(
-                color: AppColors.primaryColor,
+          Material(
+            color: Colors.transparent,
+            child: Container(
+              height: double.infinity,
+              color: Colors.black.withOpacity(0.6),
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const CircularProgressIndicator(
+                      color: AppColors.primaryColor,
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Text(
+                      provider.currentProcess,
+                      style: const TextStyle(color: Colors.white),
+                    )
+                  ],
+                ),
               ),
             ),
-          ))
+          )
       ],
     );
   }
