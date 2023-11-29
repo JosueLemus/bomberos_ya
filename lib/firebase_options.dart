@@ -53,11 +53,10 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyA3l68d7NG9_261jeqig4DFsWAFZJ1Wu6Q',
-    appId: '1:137201988770:android:82585688e1c0194f5693fb',
-    messagingSenderId: '137201988770',
-    projectId: 'notetaking-39230',
-    databaseURL: 'https://notetaking-39230-default-rtdb.firebaseio.com',
-    storageBucket: 'notetaking-39230.appspot.com',
+    apiKey: 'AIzaSyC0iB5yLbIuRkfpAV51arYKkhgiUsj464U',
+    appId: '1:142653522118:android:11b84a4e2fa50b46bc97c7',
+    messagingSenderId: '142653522118',
+    projectId: 'denuncity-notifications',
+    storageBucket: 'denuncity-notifications.appspot.com',
   );
 }

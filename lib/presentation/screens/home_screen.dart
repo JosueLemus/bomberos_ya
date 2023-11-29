@@ -1,7 +1,5 @@
 import 'package:bomberos_ya/config/helpers/local_storage_util.dart';
 import 'package:bomberos_ya/config/theme/app_colors.dart';
-import 'package:bomberos_ya/presentation/screens/screens.dart';
-import 'package:bomberos_ya/presentation/widgets/app_alerts.dart';
 import 'package:flutter/material.dart';
 
 import '../../config/navigation/application_routes.dart';
@@ -25,20 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final selectedType =
         await LocalStorageUtil.getLocalData(KeyTypes.selectedType);
     if (selectedType != null && mounted) {
-      AppAlerts.showAlertMssg(
-          title: "Tienes un reporte en progreso",
-          description:
-              "Quieres continuar con tu reporte de tipo $selectedType?",
-          context: context,
-          onClose: () {
-            Navigator.of(context).pushNamed(Routes.reportIncident);
-
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const SimpleReportScreen()),
-            );
-          });
+      _showAlertDialog(context);
     }
   }
 
@@ -104,4 +89,34 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+}
+
+Future<void> _showAlertDialog(BuildContext mainContext) async {
+  return showDialog<void>(
+    barrierDismissible: false,
+    context: mainContext,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Tienes un reporte en progreso'),
+        content: const Text(
+            '¿Quieres continuar con tu reporte? Al presionar cancelar se borrará el reporte.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text(
+              'Cancelar',
+              style: TextStyle(color: Colors.grey),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.of(mainContext).pushNamed(Routes.reportIncident);
+            },
+            child: const Text('Continuar'),
+          ),
+        ],
+      );
+    },
+  );
 }

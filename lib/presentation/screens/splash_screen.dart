@@ -1,4 +1,5 @@
 import 'package:bomberos_ya/config/navigation/application_routes.dart';
+import 'package:bomberos_ya/config/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -13,7 +14,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacementNamed(context, Routes.home);
     });
   }
@@ -24,11 +25,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
     return Scaffold(
       body: Container(
-        // decoration: const BoxDecoration(
-        //     gradient: LinearGradient(
-        //         colors: [AppColors.primaryColor, AppColors.gradientColor],
-        //         begin: Alignment.topLeft,
-        //         end: Alignment.bottomRight)),
+        decoration: const BoxDecoration(
+            gradient: LinearGradient(
+                colors: [AppColors.primaryColor, AppColors.gradientColor],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight)),
         child: Center(
           child: Padding(
             padding: const EdgeInsets.all(32.0),

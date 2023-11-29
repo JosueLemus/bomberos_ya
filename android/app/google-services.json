@@ -1,35 +1,41 @@
 {
   "project_info": {
-    "project_number": "137201988770",
-    "firebase_url": "https://notetaking-39230-default-rtdb.firebaseio.com",
-    "project_id": "notetaking-39230",
-    "storage_bucket": "notetaking-39230.appspot.com"
+    "project_number": "142653522118",
+    "project_id": "denuncity-notifications",
+    "storage_bucket": "denuncity-notifications.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:137201988770:android:82585688e1c0194f5693fb",
+        "mobilesdk_app_id": "1:142653522118:android:9bc3e10dd4f67020bc97c7",
         "android_client_info": {
-          "package_name": "com.example.bomberos_ya"
+          "package_name": "com.example.FaceNet"
         }
       },
       "oauth_client": [
         {
-          "client_id": "137201988770-8jvfdp3tqlnc7odjcujg7b13kcuaohgg.apps.googleusercontent.com",
+          "client_id": "142653522118-0hdcb9oqphvo6i2l4rqluhhsgr2b1ivs.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA3l68d7NG9_261jeqig4DFsWAFZJ1Wu6Q"
+          "current_key": "AIzaSyC0iB5yLbIuRkfpAV51arYKkhgiUsj464U"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "137201988770-8jvfdp3tqlnc7odjcujg7b13kcuaohgg.apps.googleusercontent.com",
+              "client_id": "142653522118-0hdcb9oqphvo6i2l4rqluhhsgr2b1ivs.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "142653522118-t3sug54sic14s3rddmq8n2iaes8skm2i.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.denuncity"
+              }
             }
           ]
         }
@@ -37,28 +43,71 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:137201988770:android:af7175da0bbb27535693fb",
+        "mobilesdk_app_id": "1:142653522118:android:11b84a4e2fa50b46bc97c7",
         "android_client_info": {
-          "package_name": "com.example.flutterbackgroundservice"
+          "package_name": "com.example.bomberos_ya"
         }
       },
       "oauth_client": [
         {
-          "client_id": "137201988770-8jvfdp3tqlnc7odjcujg7b13kcuaohgg.apps.googleusercontent.com",
+          "client_id": "142653522118-0hdcb9oqphvo6i2l4rqluhhsgr2b1ivs.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA3l68d7NG9_261jeqig4DFsWAFZJ1Wu6Q"
+          "current_key": "AIzaSyC0iB5yLbIuRkfpAV51arYKkhgiUsj464U"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "137201988770-8jvfdp3tqlnc7odjcujg7b13kcuaohgg.apps.googleusercontent.com",
+              "client_id": "142653522118-0hdcb9oqphvo6i2l4rqluhhsgr2b1ivs.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "142653522118-t3sug54sic14s3rddmq8n2iaes8skm2i.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.denuncity"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:142653522118:android:bcbe5e93d508bbffbc97c7",
+        "android_client_info": {
+          "package_name": "com.example.push_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "142653522118-0hdcb9oqphvo6i2l4rqluhhsgr2b1ivs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0iB5yLbIuRkfpAV51arYKkhgiUsj464U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "142653522118-0hdcb9oqphvo6i2l4rqluhhsgr2b1ivs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "142653522118-t3sug54sic14s3rddmq8n2iaes8skm2i.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.denuncity"
+              }
             }
           ]
         }
