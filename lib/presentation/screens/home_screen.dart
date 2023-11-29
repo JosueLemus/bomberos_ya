@@ -1,8 +1,8 @@
 import 'package:bomberos_ya/config/helpers/local_storage_util.dart';
 import 'package:bomberos_ya/config/theme/app_colors.dart';
 import 'package:flutter/material.dart';
-
 import '../../config/navigation/application_routes.dart';
+import 'screens.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -30,11 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: Center(
-          child: Text('Home'),
-        ),
-      ),
+      body: _currentIndex == 0 ? const SosScreen() : Container(),
       bottomNavigationBar: BottomAppBar(
         color: Colors.white,
         notchMargin: 10,
@@ -44,8 +40,8 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _buildBottomNavigationItem(Icons.history, 'Historial', 0),
-              _buildBottomNavigationItem(Icons.person, 'Perfil', 3),
+              _buildBottomNavigationItem(Icons.home, 'Inicio', 0),
+              _buildBottomNavigationItem(Icons.history, 'Historial', 1),
             ],
           ),
         ),
@@ -55,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: AppColors.primaryColor,
         child: const Icon(Icons.add),
         onPressed: () {
-          Navigator.of(context).pushNamed(Routes.reportIncident);
+          _showAlertDialogReport(context);
         },
       ),
     );
@@ -98,13 +94,12 @@ Future<void> _showAlertDialog(BuildContext mainContext) async {
     builder: (BuildContext context) {
       return AlertDialog(
         title: const Text('Tienes un reporte en progreso'),
-        content: const Text(
-            '¿Quieres continuar con tu reporte? Al presionar cancelar se borrará el reporte.'),
+        content: const Text('¿Quieres continuar con tu reporte?.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
             child: const Text(
-              'Cancelar',
+              'Quiza despues',
               style: TextStyle(color: Colors.grey),
             ),
           ),
@@ -114,6 +109,32 @@ Future<void> _showAlertDialog(BuildContext mainContext) async {
               Navigator.of(mainContext).pushNamed(Routes.reportIncident);
             },
             child: const Text('Continuar'),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+Future<void> _showAlertDialogReport(BuildContext mainContext) async {
+  return showDialog<void>(
+    context: mainContext,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Tienes un reporte en progreso'),
+        content: const Text(
+            '¿Deseas proseguir con tu reporte actual o prefieres iniciar uno nuevo?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Continuar con mi reporte anterior'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.of(context).pushNamed(Routes.reportIncident);
+            },
+            child: const Text('Crear uno nuevo'),
           ),
         ],
       );

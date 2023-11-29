@@ -51,6 +51,8 @@ dependencies:
   sqflite: ^2.3.0
   intl: ^0.18.1
   firebase_messaging: ^14.6.4
+  animate_do: ^3.0.2
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

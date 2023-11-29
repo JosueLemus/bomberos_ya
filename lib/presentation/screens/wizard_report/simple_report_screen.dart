@@ -1,5 +1,4 @@
 import 'package:bomberos_ya/config/theme/app_colors.dart';
-import 'package:bomberos_ya/config/theme/text_styles.dart';
 import 'package:bomberos_ya/presentation/providers/simple_report_provider.dart';
 import 'package:bomberos_ya/presentation/screens/wizard_report/add_images_screen.dart';
 import 'package:bomberos_ya/presentation/screens/wizard_report/type_of_fire.dart';
@@ -24,6 +23,11 @@ class SimpleReportScreenState extends ConsumerState<SimpleReportScreen> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   void nextPage() {
     _pageController.nextPage(
       duration: const Duration(milliseconds: 500),
@@ -43,8 +47,10 @@ class SimpleReportScreenState extends ConsumerState<SimpleReportScreen> {
   Widget build(BuildContext context) {
     final provider = ref.watch(simpleReportProvider);
     if (mounted && currentPage != provider.currentPage) {
-      _pageController.jumpToPage(provider.currentPage);
-      currentPage = provider.currentPage;
+      Future.delayed(const Duration(milliseconds: 50), () {
+        _pageController.jumpToPage(provider.currentPage);
+        currentPage = provider.currentPage;
+      });
     }
     return Stack(
       children: [
@@ -57,8 +63,7 @@ class SimpleReportScreenState extends ConsumerState<SimpleReportScreen> {
               Expanded(
                 child: PageView(
                   controller: _pageController,
-                  // physics: const NeverScrollableScrollPhysics(),
-                  onPageChanged: provider.setPage,
+                  physics: const NeverScrollableScrollPhysics(),
                   children: const [
                     TypeOfFire(),
                     CommentsScreen(),
