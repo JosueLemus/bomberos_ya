@@ -145,6 +145,7 @@ class _SimpleReportProvider extends ChangeNotifier {
     String fireTypeId = fireType.id;
     selectedType = fireTypeId;
     LocalStorageUtil.saveLocalData(fireTypeId, KeyTypes.selectedType);
+    goToNextPage();
   }
 
   void saveRecord(String audioPath) {
@@ -163,5 +164,17 @@ class _SimpleReportProvider extends ChangeNotifier {
     selectedImages.removeAt(index);
     LocalStorageUtil.saveArrayList(selectedImages, KeyTypes.imagesList);
     notifyListeners();
+  }
+
+  Future removeAllData() async {
+    await LocalStorageUtil.removeData();
+    currentPage = 0;
+    selectedType;
+    audioPath;
+    isLoading = false;
+    noDataFound = false;
+    selectedImages = [];
+    imageLimit = 4;
+    currentProcess = "";
   }
 }

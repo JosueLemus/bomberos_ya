@@ -1,6 +1,8 @@
 import 'package:bomberos_ya/config/helpers/local_storage_util.dart';
 import 'package:bomberos_ya/config/theme/app_colors.dart';
+import 'package:bomberos_ya/presentation/providers/simple_report_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../config/navigation/application_routes.dart';
 import 'screens.dart';
 
@@ -50,8 +52,16 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.primaryColor,
         child: const Icon(Icons.add),
-        onPressed: () {
-          _showAlertDialogReport(context);
+        onPressed: () async {
+          final selectedType =
+              await LocalStorageUtil.getLocalData(KeyTypes.selectedType);
+          if (mounted) {
+            if (selectedType != null) {
+              _showAlertDialogReport(context);
+            } else {
+              Navigator.of(context).pushNamed(Routes.reportIncident);
+            }
+          }
         },
       ),
     );
@@ -120,24 +130,38 @@ Future<void> _showAlertDialogReport(BuildContext mainContext) async {
   return showDialog<void>(
     context: mainContext,
     builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('Tienes un reporte en progreso'),
-        content: const Text(
-            '¿Deseas proseguir con tu reporte actual o prefieres iniciar uno nuevo?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Continuar con mi reporte anterior'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              Navigator.of(context).pushNamed(Routes.reportIncident);
-            },
-            child: const Text('Crear uno nuevo'),
-          ),
-        ],
-      );
+      return const _HomeDialog();
     },
   );
+}
+
+class _HomeDialog extends ConsumerWidget {
+  const _HomeDialog();
+
+  @override
+  Widget build(BuildContext context, ref) {
+    return AlertDialog(
+      title: const Text('Tienes un reporte en progreso'),
+      content: const Text(
+          '¿Deseas proseguir con tu reporte actual o prefieres iniciar uno nuevo?'),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+            Navigator.of(context).pushNamed(Routes.reportIncident);
+          },
+          child: const Text('Continuar con mi reporte anterior'),
+        ),
+        TextButton(
+          onPressed: () async {
+            Navigator.pop(context);
+            await ref.read(simpleReportProvider).removeAllData();
+            // ignore: use_build_context_synchronously
+            Navigator.of(context).pushNamed(Routes.reportIncident);
+          },
+          child: const Text('Crear uno nuevo'),
+        ),
+      ],
+    );
+  }
 }

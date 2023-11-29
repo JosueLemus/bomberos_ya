@@ -28,6 +28,11 @@ class LocalStorageUtil {
       return [];
     }
   }
+
+  static Future removeData() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+  }
 }
 
 enum KeyTypes { fireTypesList, selectedType, currentRecording, imagesList }
