@@ -50,9 +50,10 @@ class FireTypeCard extends StatelessWidget {
                     width: double.infinity,
                     fit: BoxFit.cover,
                     errorBuilder: ((context, error, stackTrace) {
-                      // TODO: Add image
                       return Container(
-                        color: Colors.red,
+                        decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(10)),
                       );
                     }),
                   ),

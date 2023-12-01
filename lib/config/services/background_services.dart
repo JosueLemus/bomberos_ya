@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
+import 'package:bomberos_ya/config/helpers/db_helper.dart';
+import 'package:bomberos_ya/config/services/api_services.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
@@ -114,7 +116,7 @@ void onStart(ServiceInstance service) async {
   });
 
   // bring to foreground
-  Timer.periodic(const Duration(seconds: 10), (timer) async {
+  Timer.periodic(const Duration(seconds: 20), (timer) async {
     if (service is AndroidServiceInstance) {
       if (await service.isForegroundService()) {
         /// OPTIONAL for use custom notification
@@ -141,21 +143,82 @@ void onStart(ServiceInstance service) async {
             : "NO CONECTADO";
 
         if (x == "CONECTADO") {
-          await Firebase.initializeApp(); // Inicializa Firebase
+          // Obtener el elemento mas antiguo de la lista de eventos
+          // Si no tiene hash, hacer el primer request para obtener hash
+          // Si ya tiene el hash mandar por partes
+          // En cada envio de partes ir incrementando las partes en uno
 
-          final DatabaseReference _databaseReference =
-              FirebaseDatabase.instance.reference().child('items');
+          // Si es la ultima parte, llamar al servicio de JOIN
+          final report = await ReportRequestDataBase.instance.getOldestReport();
+          final apiServices = ApiServices();
+          // Si no hay reportes para el servicio
+          if (report == null) {
+            print("BACKGROUND=======>" + "pARANDO SERVICIO");
+            service.invoke("stopService");
+          } else {
+            final hash = report.hash;
+            // Si no tiene hash, hacer el primer request para obtener hash
+            if (hash.isEmpty) {
+              final apiHash = await apiServices.postReport(report);
+              report.hash = apiHash;
+              print("BACKGROUND=======>" + "PEDIR HASH");
+              ReportRequestDataBase.instance.updateReport(report);
+            }
+            // Si ya tiene el hash mandar por partes
+            else {
+              try {
+                final success = await apiServices.fileParts(report);
+                if (success) {
+                  print("SI SE PUDO BURRO");
+                  int reportPart = int.parse(report.part);
+// Si es la ultima parte, llamar al servicio de JOIN y borrar el request
+                  print("BACKGROUND=======>" +
+                      "REPORT PART" +
+                      reportPart.toString());
 
-          DateTime now = DateTime.now();
-          String fecha =
-              '${now.year}-${now.month}-${now.day} ${now.hour}:${now.minute}:${now.second}.${now.millisecond}';
+                  if (reportPart >= 5) {
+                    ReportRequestDataBase.instance.deleteReport(report.id);
+                    service.setForegroundNotificationInfo(
+                      title: "UNIENDO TODO",
+                      content: "Parte $reportPart",
+                    );
+                    await apiServices.joinFileParts(hash);
 
-          await _databaseReference.push().set({'fecha': fecha});
+                    print("REPORTE ELIMINADO !!!!!!!!!!!!!!!!!!!!");
+                    service.setForegroundNotificationInfo(
+                      title: "eliminando reporte",
+                      content: "Parte $reportPart",
+                    );
+                  } else {
+                    service.setForegroundNotificationInfo(
+                      title: "SUBIENDO PARTES DE REPORTE",
+                      content: "Parte $reportPart",
+                    );
+                    print("BACKGROUND=======>" + "AUMENTANDO PARTES");
+                    // Caso contrario incrementar las partes
+                    reportPart++;
+                    report.part = reportPart.toString();
+                    ReportRequestDataBase.instance.updateReport(report);
+                  }
+                } else {
+                  print("NARANJAS");
+                }
+              } catch (e) {
+                print(e.toString());
+              }
+            }
+          }
 
-          service.setForegroundNotificationInfo(
-            title: "My App Service",
-            content: "SE ENVIO FECHA $fecha",
-          );
+          // await Firebase.initializeApp(); // Inicializa Firebase
+
+          // final DatabaseReference _databaseReference =
+          //     FirebaseDatabase.instance.reference().child('items');
+
+          // DateTime now = DateTime.now();
+          // String fecha =
+          //     '${now.year}-${now.month}-${now.day} ${now.hour}:${now.minute}:${now.second}.${now.millisecond}';
+
+          // await _databaseReference.push().set({'fecha': fecha});
         } else {
           // if you don't using custom notification, uncomment this
           service.setForegroundNotificationInfo(

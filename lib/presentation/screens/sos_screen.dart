@@ -1,6 +1,8 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:bomberos_ya/config/theme/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
+import 'package:geolocator/geolocator.dart';
 
 class SosScreen extends StatelessWidget {
   const SosScreen({super.key});
@@ -29,26 +31,34 @@ class SosScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 32),
               child: FadeIn(
                   duration: const Duration(seconds: 2),
-                  child: Container(
-                    width: 300,
-                    height: 300,
-                    decoration: BoxDecoration(
-                        color: AppColors.primaryColor,
-                        borderRadius: BorderRadius.circular(150),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: AppColors.primaryColor,
-                            blurRadius: 30,
-                          )
-                        ]),
-                    child: const Center(
-                        child: Text(
-                      'SOS',
-                      style: TextStyle(
-                          fontSize: 60,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    )),
+                  child: InkWell(
+                    onTap: () async {
+                      // FlutterBackgroundService().invoke("stopService");
+
+                      FlutterBackgroundService().startService();
+                      FlutterBackgroundService().invoke("setAsForeground");
+                    },
+                    child: Container(
+                      width: 300,
+                      height: 300,
+                      decoration: BoxDecoration(
+                          color: AppColors.primaryColor,
+                          borderRadius: BorderRadius.circular(150),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: AppColors.primaryColor,
+                              blurRadius: 30,
+                            )
+                          ]),
+                      child: const Center(
+                          child: Text(
+                        'SOS',
+                        style: TextStyle(
+                            fontSize: 60,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      )),
+                    ),
                   )),
             ),
             FadeInRight(

@@ -1,5 +1,6 @@
+import 'dart:convert';
 import 'dart:io';
-
+import 'dart:math';
 import 'package:bomberos_ya/config/helpers/base64_converter.dart';
 import 'package:bomberos_ya/config/helpers/db_helper.dart';
 import 'package:bomberos_ya/config/helpers/local_storage_util.dart';
@@ -75,7 +76,7 @@ class _SimpleReportProvider extends ChangeNotifier {
     final lastTimeModified = await dbHelper.getLastModifiedTime();
     // Provide a default date
     String lastTime = "01-01-2020 00:00:00";
-    if (lastTimeModified != null) {
+    if (lastTimeModified != null && fireTypes.isNotEmpty) {
       lastTime = local_date_utils.DateUtils.formatDateTime(lastTimeModified);
     }
 
@@ -119,20 +120,30 @@ class _SimpleReportProvider extends ChangeNotifier {
   }
 
   void postData() async {
+    // FlutterBackgroundService().invoke("setAsForeground");
     try {
       isLoading = true;
-      currentProcess = "Convirtiendo imagenes";
-      notifyListeners();
-      final images =
-          await Base64Converter.convertImagesToBase64(selectedImages);
-      currentProcess = "Convirtiendo audio";
-      notifyListeners();
+      // final images =
+      //     await Base64Converter.convertImagesToBase64(selectedImages);
       final audioBase64 =
           await Base64Converter.convertAudioToBase64(File(audioPath ?? ""));
-      currentProcess = "Enviando datos";
-      notifyListeners();
-      services.postReport(audioBase64, images);
+      // final imagenesJson = jsonEncode(images);
+
+      final report = ReportRequest(
+          id: Random().nextInt(10000).toString(),
+          hash: "",
+          usuario: "el ya tu sabe",
+          tipoIncendio: selectedType ?? "",
+          lon: "",
+          lat: "",
+          audio: audioBase64,
+          imagenes: jsonEncode(selectedImages),
+          part: "1");
+
+      ReportRequestDataBase.instance.insertReport(report);
+
       isLoading = false;
+      await removeAllData();
       notifyListeners();
     } catch (e) {
       // Manejar la excepción aquí
@@ -167,14 +178,14 @@ class _SimpleReportProvider extends ChangeNotifier {
   }
 
   Future removeAllData() async {
-    await LocalStorageUtil.removeData();
     currentPage = 0;
-    selectedType;
-    audioPath;
+    selectedType = null;
+    audioPath = null;
     isLoading = false;
     noDataFound = false;
     selectedImages = [];
     imageLimit = 4;
     currentProcess = "";
+    await LocalStorageUtil.removeData();
   }
 }

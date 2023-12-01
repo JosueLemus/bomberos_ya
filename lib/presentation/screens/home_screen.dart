@@ -3,6 +3,7 @@ import 'package:bomberos_ya/config/theme/app_colors.dart';
 import 'package:bomberos_ya/presentation/providers/simple_report_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geolocator/geolocator.dart';
 import '../../config/navigation/application_routes.dart';
 import 'screens.dart';
 
@@ -32,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _currentIndex == 0 ? const SosScreen() : Container(),
+      body: _currentIndex == 0 ? const SosScreen() : const HistoryScreen(),
       bottomNavigationBar: BottomAppBar(
         color: Colors.white,
         notchMargin: 10,

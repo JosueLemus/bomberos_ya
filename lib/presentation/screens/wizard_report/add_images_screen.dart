@@ -5,6 +5,7 @@ import 'package:bomberos_ya/presentation/providers/simple_report_provider.dart';
 import 'package:bomberos_ya/presentation/widgets/app_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../config/theme/text_styles.dart';
@@ -17,9 +18,8 @@ class AddImagesScreen extends ConsumerWidget {
     final provider = ref.watch(simpleReportProvider);
     Future<void> openCamera() async {
       final picker = ImagePicker();
-      // final image =
-      //     await picker.pickImage(source: ImageSource.camera, imageQuality: 5);
-      final image = await picker.pickImage(source: ImageSource.camera);
+      final image =
+          await picker.pickImage(source: ImageSource.camera, imageQuality: 5);
       if (image != null) {
         provider.addImage(image.path);
       }
@@ -105,7 +105,20 @@ class AddImagesScreen extends ConsumerWidget {
           ),
         ),
         AppButton(
-          onPressed: provider.selectedImages.isEmpty ? null : provider.postData,
+          onPressed: provider.selectedImages.isEmpty
+              ? null
+              : () {
+                  provider.postData();
+                  Navigator.of(context).pop();
+                  Fluttertoast.showToast(
+                      msg: "Reporte enviado",
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.black,
+                      textColor: Colors.white,
+                      fontSize: 16.0);
+                },
           text: "Aceptar",
           padding: const EdgeInsets.only(bottom: 32, left: 23, right: 23),
         ),

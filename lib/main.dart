@@ -1,4 +1,5 @@
 import 'package:bomberos_ya/config/navigation/application_routes.dart';
+import 'package:bomberos_ya/config/services/background_services.dart';
 import 'package:bomberos_ya/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'presentation/screens/screens.dart';
 void main() async {
   // FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   WidgetsFlutterBinding.ensureInitialized();
+  await initializeService();
   await Firebase.initializeApp(
       name: "denuncity-notifications",
       options: DefaultFirebaseOptions.currentPlatform);
